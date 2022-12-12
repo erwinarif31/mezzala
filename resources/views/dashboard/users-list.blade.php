@@ -23,24 +23,28 @@
 @endsection
 
 @section('css-libraries')
-    {{-- <link rel="stylesheet" href="../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="../node_modules/datatables.net-select-bs4/css/select.bootstrap4.min.css"> --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
 @endsection
 
-@section('js-libraries')
-    {{-- <script src="../node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
-    <script src="../node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../node_modules/datatables.net-select-bs4/js/select.bootstrap4.min.js"></script> --}}
-@endsection
-
 @section('spesific-js')
-    {{-- <script src="../assets/js/page/modules-datatables.js"></script> --}}
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.2.0/js/dataTables.dateTime.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://raw.githubusercontent.com/phstc/jquery-dateFormat/master/dist/jquery-dateformat.js"></script>
     <script>
-        $(document).ready(function() {
+        var fromDate;
+        var toDate;
 
+
+        $(document).ready(function() {
+            // let testDate = new Date();
+            // // console.log(testDate);
+            // year = testDate.getFullYear();
+            // month = testDate.getMonth() + 1;
+            // day = testDate.getDate();
+
+            // nowDate = year + "-" + month + "-" + day
             var table = $("#table-1").DataTable({
                 "columnDefs": [{
                     "sortable": false,
@@ -52,10 +56,28 @@
                 dom: '<"#filterDiv">frtip',
             })
 
-            $("#filterDiv").append(
-                "<button class='btn btn-primary' id='filterBtn' type='button' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-filter'></i>  Filter</button>"
-            )
-            $("#filter-menu").prependTo($("#filterDiv"));
+            fromDate = $("#from");
+            toDate = $("#to");
+
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    var min = fromDate.val();
+                    var max = toDate.val();
+                    var date = new Date(data[3]);
+                    year = date.getFullYear();
+                    month = date.getMonth() + 1;
+                    day = date.getDate();
+                    date = year + "-" + month + "-" + day
+                    if (
+                        (min === "" && max === "") ||
+                        (min === "" && date <= max) ||
+                        (min <= date && max === "") ||
+                        (min <= date && date <= max)
+                    ) {
+                        return true;
+                    } 
+                }
+            );
 
             $('.filter-status').on('change', function(e) {
                 var searchTerms = []
@@ -78,9 +100,25 @@
                 table.column(5).search(searchTerms.join('|'), true, false, true).draw();
                 console.log($(this).val());
             });
+
+            $('#from, #to').on('change', function() {
+                // console.log(fromDate.val());
+                table.draw();
+            });
+
+            $("#filterDiv").append(
+                "<button class='btn btn-primary' id='filterBtn' type='button' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-filter'></i>  Filter</button>"
+            )
+            $("#filter-menu").prependTo($("#filterDiv"));
+
+
+
+
+            // console.log(nowDate);
+            // console.log(fromDate.val());
+
         })
     </script>
-
 @endsection
 
 @section('css-spesific')
@@ -108,7 +146,7 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Username</th>
-                                    <th>Due Date</th>
+                                    <th>Joined Date</th>
                                     <th>Article Authore</th>
                                     <th>is_admin?</th>
                                     <th>status</th>
@@ -144,39 +182,48 @@
     </div>
 
     <div class="dropdown-menu" id="filter-menu">
-        <div class="dropdown-title">Status</div>
-        <div class="form-check ml-3">
+        <div class="dropdown-title pb-0">Status</div>
+        <div class="form-check ml-2">
             <input class="filter-status" name="status" type="checkbox" id="active" value="Active">
-            <label class="form-check-label" for="active">
+            <a class="form-check-label" for="active">
                 Active
-            </label>
+            </a>
         </div>
-        <div class="form-check ml-3">
+        <div class="form-check ml-2">
             <input class="filter-status" name="status" type="checkbox" id="inactive" value="Inactive">
-            <label class="form-check-label" for="inactive">
+            <a class="form-check-label" for="inactive">
                 Inactive
-            </label>
+            </a>
         </div>
-        <div class="form-check ml-3">
+        <div class="form-check ml-2">
             <input class="filter-status" name="status" type="checkbox" id="block" value="Block">
-            <label class="form-check-label" for="block">
+            <a class="form-check-label" for="block">
                 Block
-            </label>
+            </a>
         </div>
 
-        <div class="dropdown-title">User Level</div>
-        <div class="form-check ml-3">
+        <div class="dropdown-title pb-0">User Level</div>
+        <div class="form-check ml-2">
             <input class="filter-isAdmin" type="checkbox" id="admin" value="1">
-            <label class="form-check-label" for="admin">
+            <a class="form-check-label" for="admin">
                 Admin
-            </label>
+            </a>
         </div>
-        <div class="form-check ml-3">
+        <div class="form-check ml-2">
             <input class="filter-isAdmin" type="checkbox" id="member" value="0">
-            <label class="form-check-label" for="member">
+            <a class="form-check-label" for="member">
                 Member
-            </label>
+            </a>
         </div>
 
+        <div class="dropdown-title pb-0">Joined Date</div>
+        <div class="from-date ml-4 mr-3">
+            <a for="from" class="">From</a>
+            <input type="date" class=" mb-1 w-100" name="from" id="from" style="display: block">
+        </div>
+        <div class="to-date ml-4 mr-3">
+            <a for="to" class="">To</a>
+            <input type="date" class=" mb-1 w-100" name="to" id="to" style="display: block">
+        </div>
     </div>
 @endsection

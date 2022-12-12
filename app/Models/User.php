@@ -46,6 +46,6 @@ class User extends Authenticatable
 
     public function getCreatedAtAttribute($date)
     {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('l, M Y');
+        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
     }
 }
