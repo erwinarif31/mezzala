@@ -44,6 +44,8 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/components.css">
+
+    @yield('css-spesific')
 </head>
 
 <body class="sidebar-mini">

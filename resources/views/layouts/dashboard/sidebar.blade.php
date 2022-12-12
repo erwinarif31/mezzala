@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="index.html">Trequartista</a>
+            <a href="index.html" class="h4 text-center">Mezzala</a>
         </div>
         <ul class="sidebar-menu">
             <li><a class="nav-link" href="blank.html"><i class="fas fa-futbol"></i> <span>Dashboard</span></a></li>
