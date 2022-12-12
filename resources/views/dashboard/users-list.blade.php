@@ -57,100 +57,28 @@
                                     <th>Email</th>
                                     <th>Username</th>
                                     <th>Due Date</th>
-                                    <th>Article Authored</th>
+                                    <th>Article Authore</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Create a mobile app</td>
-                                    <td class="align-middle">
-                                        <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                                            <div class="progress-bar bg-success" data-width="100%"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img alt="image" src="../assets/img/avatar/avatar-5.png" class="rounded-circle"
-                                            width="35" data-toggle="tooltip" title="Wildan Ahdian">
-                                    </td>
-                                    <td>2018-01-20</td>
-                                    <td>
-                                        <div class="badge badge-success">Completed</div>
-                                    </td>
-                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Redesign homepage</td>
-                                    <td class="align-middle">
-                                        <div class="progress" data-height="4" data-toggle="tooltip" title="0%">
-                                            <div class="progress-bar" data-width="0"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle"
-                                            width="35" data-toggle="tooltip" title="Nur Alpiana">
-                                        <img alt="image" src="../assets/img/avatar/avatar-3.png" class="rounded-circle"
-                                            width="35" data-toggle="tooltip" title="Hariono Yusup">
-                                        <img alt="image" src="../assets/img/avatar/avatar-4.png" class="rounded-circle"
-                                            width="35" data-toggle="tooltip" title="Bagus Dwi Cahya">
-                                    </td>
-                                    <td>2018-04-10</td>
-                                    <td>
-                                        <div class="badge badge-info">Todo</div>
-                                    </td>
-                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Backup database</td>
-                                    <td class="align-middle">
-                                        <div class="progress" data-height="4" data-toggle="tooltip" title="70%">
-                                            <div class="progress-bar bg-warning" data-width="70%"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img alt="image" src="../assets/img/avatar/avatar-1.png"
-                                            class="rounded-circle" width="35" data-toggle="tooltip"
-                                            title="Rizal Fakhri">
-                                        <img alt="image" src="../assets/img/avatar/avatar-2.png"
-                                            class="rounded-circle" width="35" data-toggle="tooltip"
-                                            title="Hasan Basri">
-                                    </td>
-                                    <td>2018-01-29</td>
-                                    <td>
-                                        <div class="badge badge-warning">In Progress</div>
-                                    </td>
-                                    <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Input data</td>
-                                    <td class="align-middle">
-                                        <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                                            <div class="progress-bar bg-success" data-width="100%"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img alt="image" src="../assets/img/avatar/avatar-2.png"
-                                            class="rounded-circle" width="35" data-toggle="tooltip"
-                                            title="Rizal Fakhri">
-                                        <img alt="image" src="../assets/img/avatar/avatar-5.png"
-                                            class="rounded-circle" width="35" data-toggle="tooltip"
-                                            title="Isnap Kiswandi">
-                                        <img alt="image" src="../assets/img/avatar/avatar-4.png"
-                                            class="rounded-circle" width="35" data-toggle="tooltip"
-                                            title="Yudi Nawawi">
-                                        <img alt="image" src="../assets/img/avatar/avatar-1.png"
-                                            class="rounded-circle" width="35" data-toggle="tooltip"
-                                            title="Khaerul Anwar">
-                                    </td>
-                                    <td>2018-01-16</td>
-                                    <td>
-                                        <div class="badge badge-success">Completed</div>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-secondary">Detail</a>
-                                        <a href="#" class="btn btn-secondary">Detail</a>
-                                    </td>
-                                </tr>
+                                @foreach ($users as $user)
+                                    <tr>
+                                        <td>{{$user->name}}</td>
+                                        <td>{{$user->email}}</td>
+                                        <td>username</td>
+                                        <td>{{$user->created_at}}</td>
+                                        <td>
+                                            <ul>
+                                                <li>test</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-primary">Edit</button>
+                                            <button class="btn btn-primary">Detail</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

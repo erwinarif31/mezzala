@@ -8,7 +8,7 @@
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-file-alt"></i>
                     <span>Article</span></a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" style="width: 230px">
                     <li><a class="nav-link" href="layout-default.html"><i class="fas fa-list"></i>Article List</a>
                     </li>
                     <li><a class="nav-link" href="layout-transparent.html"><i class="fas fa-plus"></i>Create Article</a></li>
@@ -17,7 +17,7 @@
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-globe-europe"></i>
                     <span>Category</span></a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" style="width: 230px">
                     <li><a class="nav-link" href="layout-default.html"><i class="fas fa-list"></i>Category List</a>
                     </li>
                     <li><a class="nav-link" href="layout-transparent.html"><i class="fas fa-plus"></i>Create Category</a></li>
@@ -26,7 +26,7 @@
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-trophy"></i>
                     <span>Sub Category</span></a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" style="width: 230px">
                     <li><a class="nav-link" href="layout-default.html"><i class="fas fa-list"></i>Sub Category List</a>
                     </li>
                     <li><a class="nav-link" href="layout-transparent.html"><i class="fas fa-plus"></i>Create Sub Category</a></li>
@@ -35,7 +35,7 @@
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-tag"></i>
                     <span>Tag</span></a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" style="width: 230px">
                     <li><a class="nav-link" href="layout-default.html"><i class="fas fa-list"></i>Tag List</a>
                     </li>
                     <li><a class="nav-link" href="layout-transparent.html"><i class="fas fa-plus"></i>Create Tag</a></li>
