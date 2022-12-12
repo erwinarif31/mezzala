@@ -22,7 +22,7 @@ class RegisterController extends Controller
 
         User::create($validated);
 
-        $request->session()->flash('registrationSuccess', 'Congratulation, your account has been succesfully created');
+        session()->flash('registrationSuccess', 'Congratulations, your account has been succesfully created');
 
         return redirect('/login');
         // return $request->all();
