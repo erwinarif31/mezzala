@@ -36,15 +36,7 @@
         var fromDate;
         var toDate;
 
-
         $(document).ready(function() {
-            // let testDate = new Date();
-            // // console.log(testDate);
-            // year = testDate.getFullYear();
-            // month = testDate.getMonth() + 1;
-            // day = testDate.getDate();
-
-            // nowDate = year + "-" + month + "-" + day
             var table = $("#table-1").DataTable({
                 "columnDefs": [{
                     "sortable": false,
@@ -56,9 +48,20 @@
                 dom: '<"#filterDiv">frtip',
             })
 
+            $('#from, #to').on('change', function() {
+                table.draw();
+            });
+
+            $("#filterDiv").append(
+                "<button class='btn btn-primary' id='filterBtn' type='button' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-filter'></i>  Filter</button>"
+            )
+            $("#filter-menu").prependTo($("#filterDiv"));
+
+            // filter
             fromDate = $("#from");
             toDate = $("#to");
 
+            // date-filter
             $.fn.dataTable.ext.search.push(
                 function(settings, data, dataIndex) {
                     var min = fromDate.val();
@@ -75,10 +78,11 @@
                         (min <= date && date <= max)
                     ) {
                         return true;
-                    } 
+                    }
                 }
             );
 
+            // column-filter (status, user level)
             $('.filter-status').on('change', function(e) {
                 var searchTerms = []
                 $.each($('.filter-status'), function(i, elem) {
@@ -101,21 +105,14 @@
                 console.log($(this).val());
             });
 
-            $('#from, #to').on('change', function() {
-                // console.log(fromDate.val());
-                table.draw();
-            });
-
-            $("#filterDiv").append(
-                "<button class='btn btn-primary' id='filterBtn' type='button' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-filter'></i>  Filter</button>"
-            )
-            $("#filter-menu").prependTo($("#filterDiv"));
-
-
-
-
-            // console.log(nowDate);
-            // console.log(fromDate.val());
+            $(document).on('click', '#clear-filter', function(e) {
+                $('input[type=checkbox]').prop('checked',false);
+                $('input[type=date]').val('');
+                table
+                    .search('')
+                    .columns().search('')
+                    .draw();
+            })
 
         })
     </script>
@@ -125,7 +122,7 @@
     <style>
         #filterDiv {
             position: absolute;
-            right: 25%
+            right: 23%
         }
     </style>
 @endsection
@@ -221,9 +218,13 @@
             <a for="from" class="">From</a>
             <input type="date" class=" mb-1 w-100" name="from" id="from" style="display: block">
         </div>
-        <div class="to-date ml-4 mr-3">
+        <div class="to-date ml-4 mr-3 mb-1">
             <a for="to" class="">To</a>
             <input type="date" class=" mb-1 w-100" name="to" id="to" style="display: block">
+        </div>
+
+        <div class="w-100">
+            <button class="btn btn-primary btn-sm mt-2 mr-3 float-right" id="clear-filter">Clear</button>
         </div>
     </div>
 @endsection
