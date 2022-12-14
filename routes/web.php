@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,16 +32,22 @@ Route::get('/register', function () {
 
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::controller(LoginController::class)->group(function () {
+    Route::post('/login', 'authenticate')->name('login');
+    Route::post('/logout', 'logout');
+});
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
-Route::get('/dashboard/profile', [DashboardController::class, 'profile'])->middleware('auth');
+Route::controller(DashboardController::class)->group(function () {
+    Route::get('/dashboard', 'index')->middleware('auth');
+    Route::get('/dashboard/profile', 'profile')->middleware('auth');
+});
 
-Route::get('/users', [UserController::class, 'index'])->middleware('is_admin')->middleware('auth')->name('users');
-Route::get('/users/{id}', [UserController::class, 'getUser'])->middleware('is_admin')->middleware('auth');
+Route::controller(UserController::class)->group(function () {
+    Route::get('/users', 'index')->middleware('is_admin')->middleware('auth')->name('users');
+    Route::post('/users', 'store')->middleware('is_admin')->middleware('auth');
 
-Route::post('/users/update', [UserController::class, 'update'])->middleware('is_admin')->middleware('auth')->name('users.update');
-Route::delete('/users/delete/{id}', [UserController::class, 'delete'])->middleware('is_admin')->middleware('auth');
+    Route::get('/users/{id}', 'getUser')->middleware('is_admin')->middleware('auth');
+    Route::post('/users/update', 'update')->middleware('is_admin')->middleware('auth')->name('users.update');
 
-Route::post('/users', [UserController::class, 'store'])->middleware('is_admin')->middleware('auth');
+    Route::delete('/users/delete/{id}', 'delete')->middleware('is_admin')->middleware('auth');
+});
