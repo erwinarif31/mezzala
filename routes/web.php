@@ -25,14 +25,14 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login')->middleware('guest');
 
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
-Route::post('/logout', [LoginController::class, 'logout']);
-
 Route::get('/register', function () {
     return view('auth.register');
 })->middleware('guest');
 
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
+
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
+Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 Route::get('/dashboard/profile', [DashboardController::class, 'profile'])->middleware('auth');

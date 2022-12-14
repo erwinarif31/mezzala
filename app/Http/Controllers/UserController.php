@@ -19,13 +19,12 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // return $request['biography'];
         $validated = $request->validate([
             'name' => ['required', 'max:255'],
             'username' => ['required', 'max:255', 'unique:users'],
             'email' => ['required', 'email:dns', 'unique:users'],
             'password' => ['required', 'min:6', 'max:225'],
-            'biography' => ['required'],
+            'biography' => [''],
         ]);
 
         if ($request->file('img-file')) {
@@ -55,7 +54,7 @@ class UserController extends Controller
                 'password' => $test->password,
                 'is_admin' => $test->is_admin,
                 'status' => $test->status,
-                'biography  ' => $test->biography,
+                'biography' => $test->biography,
             ],
             200,
         );
@@ -69,6 +68,7 @@ class UserController extends Controller
             'username' => ['required', 'max:255'],
             'email' => ['required', 'email:dns'],
             'password' => ['required', 'min:6', 'max:225'],
+            'biography' => [''],
         ]);
 
         if ($request->file('img-file')) {
@@ -88,6 +88,5 @@ class UserController extends Controller
     public function delete($id)
     {
         User::find($id)->delete();
-        // return 'anjing kau';
     }
 }

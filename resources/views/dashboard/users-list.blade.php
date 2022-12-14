@@ -196,7 +196,7 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Biography</label>
                             <div class="col-sm-12 col-md-7">
-                                <textarea class="summernote-simple" id="bio" name="biography"></textarea>
+                                <textarea class="summernote-simple" name="biography"></textarea>
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -485,13 +485,14 @@
                 type: "get",
                 url: "/users/" + id,
                 success: function(response) {
-                    console.log(response.name);
+                    // console.log($('.note-editable'));
                     $('#name').val(response.name);
                     $('#email').val(response.email);
                     $('#username').val(response.username);
                     $('#status select').val(response.status).change();
-                    $('#status select').val(response.is_admin).change();
-                    $('#biography').val(response.biography);
+                    $('#is_admin select').val(response.is_admin).change();
+                    $("#bio").summernote("code", response.biography);
+                    // console.log(response.biography);
                 }
             });
             $('#edit-form-card').show();
