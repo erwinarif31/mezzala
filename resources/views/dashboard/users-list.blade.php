@@ -381,147 +381,145 @@
         var fromDate;
         var toDate;
 
+        var table;
 
 
-        $(document).ready(function() {
+        // $(document).ready(function() {
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            var table = $("#table-1").DataTable({
-                "columnDefs": [{
-                    "sortable": false,
-                    "targets": [4, 7]
-                }, {
-                    "visible": false,
-                    "targets": [5, 6]
-                }],
-            })
-
-            $('#from, #to').on('change', function() {
-                table.draw();
-            });
-
-            $("#filterDiv").append(
-                "<a href='#create-form-card' class='btn btn-success mr-3' id='create-btn' style='color: white;'><i class='fas fa-plus'></i>  Create User</a>"
-            )
-            $("#filterDiv").append(
-                "<button class='btn btn-primary' id='filterBtn' type='button' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-filter'></i>  Filter</button>"
-            )
-            $("#filter-menu").prependTo($("#filterDiv"));
-
-            // filter
-            fromDate = $("#from");
-            toDate = $("#to");
-
-            // date-filter
-            $.fn.dataTable.ext.search.push(
-                function(settings, data, dataIndex) {
-                    var min = fromDate.val();
-                    var max = toDate.val();
-                    var date = new Date(data[3]);
-                    year = date.getFullYear();
-                    month = date.getMonth() + 1;
-                    day = date.getDate();
-                    date = year + "-" + month + "-" + day
-                    if (
-                        (min === "" && max === "") ||
-                        (min === "" && date <= max) ||
-                        (min <= date && max === "") ||
-                        (min <= date && date <= max)
-                    ) {
-                        return true;
-                    }
-                }
-            );
-
-            // column-filter (status, user level)
-            $('.filter-status').on('change', function(e) {
-                var searchTerms = []
-                $.each($('.filter-status'), function(i, elem) {
-                    if ($(elem).prop('checked')) {
-                        searchTerms.push("^" + $(this).val() + "$")
-                    }
-                })
-                table.column(6).search(searchTerms.join('|'), true, false, true).draw();
-                console.log($(this).val());
-            });
-
-            $('.filter-isAdmin').on('change', function(e) {
-                var searchTerms = []
-                $.each($('.filter-isAdmin'), function(i, elem) {
-                    if ($(elem).prop('checked')) {
-                        searchTerms.push("^" + $(this).val() + "$")
-                    }
-                })
-                table.column(5).search(searchTerms.join('|'), true, false, true).draw();
-                console.log($(this).val());
-            });
-
-            $(document).on('click', '#clear-filter', function(e) {
-                $('input[type=checkbox]').prop('checked', false);
-                $('input[type=date]').val('');
-                table
-                    .search('')
-                    .columns().search('')
-                    .draw();
-            })
-
-            $(document).on('click', '#create-btn', function() {
-                $('#create-form-card').show();
-                $('#edit-form-card').hide();
-            })
-
-            $(document).on('click', '.edit-btn', function() {
-
-                let id = $(this).attr('id');
-                $('#id').val(id);
-                $('#update-form').attr('action', '{{ route('users.update') }}');
-
-                $.ajax({
-                    type: "get",
-                    url: "/users/" + id,
-                    success: function(response) {
-                        console.log(response.name);
-                        $('#name').val(response.name);
-                        $('#email').val(response.email);
-                        $('#username').val(response.username);
-                        $('#status select').val(response.status).change();
-                        $('#status select').val(response.is_admin).change();
-                        $('#biography').val(response.biography);
-                    }
-                });
-                $('#edit-form-card').show();
-                $('#create-form-card').hide();
-            })
-
-            $(document).on('click', '#clear-btn', function() {
-                $('#submit-form')[0].reset();
-                $('#update-form')[0].reset();
-            })
-
-            function test(id) {
-                // $.ajax({
-                //     type: 'POST',
-                //     data: {
-                //         _token: "{{ csrf_token() }}",
-                //         id: id,
-                //         _method: "DELETE"
-                //     },
-                //     url: 'users/delete/' + id,
-                //     success: function(response) {
-                //         // jaajdwindow.location = '/permission'
-                //     }
-                // })
-                alert(id);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-
+        });
+        var table = $("#table-1").DataTable({
+            "columnDefs": [{
+                "sortable": false,
+                "targets": [4, 7]
+            }, {
+                "visible": false,
+                "targets": [5, 6]
+            }],
         })
 
+        $('#from, #to').on('change', function() {
+            table.draw();
+        });
+
+        $("#filterDiv").append(
+            "<a href='#create-form-card' class='btn btn-success mr-3' id='create-btn' style='color: white;'><i class='fas fa-plus'></i>  Create User</a>"
+        )
+        $("#filterDiv").append(
+            "<button class='btn btn-primary' id='filterBtn' type='button' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-filter'></i>  Filter</button>"
+        )
+        $("#filter-menu").prependTo($("#filterDiv"));
+
+        // filter
+        fromDate = $("#from");
+        toDate = $("#to");
+
+        // date-filter
+        $.fn.dataTable.ext.search.push(
+            function(settings, data, dataIndex) {
+                var min = fromDate.val();
+                var max = toDate.val();
+                var date = new Date(data[3]);
+                year = date.getFullYear();
+                month = date.getMonth() + 1;
+                day = date.getDate();
+                date = year + "-" + month + "-" + day
+                if (
+                    (min === "" && max === "") ||
+                    (min === "" && date <= max) ||
+                    (min <= date && max === "") ||
+                    (min <= date && date <= max)
+                ) {
+                    return true;
+                }
+            }
+        );
+
+        // column-filter (status, user level)
+        $('.filter-status').on('change', function(e) {
+            var searchTerms = []
+            $.each($('.filter-status'), function(i, elem) {
+                if ($(elem).prop('checked')) {
+                    searchTerms.push("^" + $(this).val() + "$")
+                }
+            })
+            table.column(6).search(searchTerms.join('|'), true, false, true).draw();
+            console.log($(this).val());
+        });
+
+        $('.filter-isAdmin').on('change', function(e) {
+            var searchTerms = []
+            $.each($('.filter-isAdmin'), function(i, elem) {
+                if ($(elem).prop('checked')) {
+                    searchTerms.push("^" + $(this).val() + "$")
+                }
+            })
+            table.column(5).search(searchTerms.join('|'), true, false, true).draw();
+            console.log($(this).val());
+        });
+
+        $(document).on('click', '#clear-filter', function(e) {
+            $('input[type=checkbox]').prop('checked', false);
+            $('input[type=date]').val('');
+            table
+                .search('')
+                .columns().search('')
+                .draw();
+        })
+
+        $(document).on('click', '#create-btn', function() {
+            $('#create-form-card').show();
+            $('#edit-form-card').hide();
+        })
+
+        $(document).on('click', '.edit-btn', function() {
+
+            let id = $(this).attr('id');
+            $('#id').val(id);
+            $('#update-form').attr('action', '{{ route('users.update') }}');
+
+            $.ajax({
+                type: "get",
+                url: "/users/" + id,
+                success: function(response) {
+                    console.log(response.name);
+                    $('#name').val(response.name);
+                    $('#email').val(response.email);
+                    $('#username').val(response.username);
+                    $('#status select').val(response.status).change();
+                    $('#status select').val(response.is_admin).change();
+                    $('#biography').val(response.biography);
+                }
+            });
+            $('#edit-form-card').show();
+            $('#create-form-card').hide();
+        })
+
+        $(document).on('click', '#clear-btn', function() {
+            $('#submit-form')[0].reset();
+            $('#update-form')[0].reset();
+        })
+
+
+
+
+        // })
         function test(id) {
-            alert(id);
+            $.ajax({
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                    _method: "DELETE"
+                },
+                url: 'users/delete/' + id,
+                success: function(response) {
+                    window.location = '/users'
+                }
+            })
         }
     </script>
 @endsection

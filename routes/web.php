@@ -41,5 +41,6 @@ Route::get('/users', [UserController::class, 'index'])->middleware('is_admin')->
 Route::get('/users/{id}', [UserController::class, 'getUser'])->middleware('is_admin')->middleware('auth');
 
 Route::post('/users/update', [UserController::class, 'update'])->middleware('is_admin')->middleware('auth')->name('users.update');
+Route::delete('/users/delete/{id}', [UserController::class, 'delete'])->middleware('is_admin')->middleware('auth');
 
 Route::post('/users', [UserController::class, 'store'])->middleware('is_admin')->middleware('auth');
