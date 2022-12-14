@@ -5,13 +5,14 @@
         </div>
         <ul class="sidebar-menu">
             <li><a class="nav-link" href="/dashboard"><i class="fas fa-futbol"></i> <span>Dashboard</span></a></li>
+            <li><a class="nav-link" href="/tags"><i class="fas fa-tag"></i> <span>Tag</span></a></li>
             @if (auth()->user()->is_admin == 1)
                 <li><a class="nav-link" href="/users"><i class="fas fa-user"></i> <span>User</span></a></li>
             @endif
         </ul>
 
         <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-            <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
+            <a href="/" class="btn btn-primary btn-lg btn-block btn-icon-split">
                 <i class="fas fa-home"></i> Homepage
             </a>
         </div>

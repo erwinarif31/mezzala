@@ -51,6 +51,7 @@
 @endsection
 
 @section('page-content')
+    {{-- Table --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -72,18 +73,18 @@
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ $user->created_at }}</td>
-                                        <td>
+                                    <tr id="row-{{ $user->id }}">
+                                        <td class="align-middle">{{ $user->name }}</td>
+                                        <td  class="align-middle">{{ $user->email }}</td>
+                                        <td  class="align-middle">{{ $user->username }}</td>
+                                        <td  class="align-middle">{{ $user->created_at }}</td>
+                                        <td  class="align-middle">
                                             <a class="btn btn-primary" style="color: white"><i class="fas fa-eye"></i>
                                                 View</a>
                                         </td>
-                                        <td>{{ $user->is_admin }}</td>
-                                        <td>{{ $user->status }}</td>
-                                        <td>
+                                        <td  class="align-middle">{{ $user->is_admin }}</td>
+                                        <td  class="align-middle">{{ $user->status }}</td>
+                                        <td  class="align-middle">
                                             <a href="#edit-form-card" style="color: white" class="edit-btn"
                                                 id="{{ $user->id }}">
                                                 <button class="btn btn-primary" value='{{ $user->id }}'><i
@@ -196,7 +197,7 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Biography</label>
                             <div class="col-sm-12 col-md-7">
-                                <textarea class="summernote-simple" name="biography"></textarea>
+                                <textarea class="summernote-simple" name="biography" id="create_bio"></textarea>
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -318,8 +319,10 @@
             </div>
         </div>
     </div>
+
     {{-- Droddown Filter --}}
     <div class="dropdown-menu" id="filter-menu">
+        {{-- Status Filter --}}
         <div class="dropdown-title pb-0">Status</div>
         <div class="form-check ml-2">
             <input class="filter-status" name="status" type="checkbox" id="active" value="2">
@@ -354,6 +357,7 @@
             </a>
         </div>
 
+        {{-- Date Filter Element --}}
         <div class="dropdown-title pb-0">Joined Date</div>
         <div class="from-date ml-4 mr-3">
             <a for="from" class="">From</a>
@@ -380,17 +384,14 @@
     <script>
         var fromDate;
         var toDate;
-
         var table;
-
-
-        // $(document).ready(function() {
 
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
         var table = $("#table-1").DataTable({
             "columnDefs": [{
                 "sortable": false,
@@ -461,6 +462,7 @@
             console.log($(this).val());
         });
 
+        // Clear filter Button
         $(document).on('click', '#clear-filter', function(e) {
             $('input[type=checkbox]').prop('checked', false);
             $('input[type=date]').val('');
@@ -470,13 +472,14 @@
                 .draw();
         })
 
+        // Create Form Button
         $(document).on('click', '#create-btn', function() {
             $('#create-form-card').show();
             $('#edit-form-card').hide();
         })
 
+        // Edit Form Button
         $(document).on('click', '.edit-btn', function() {
-
             let id = $(this).attr('id');
             $('#id').val(id);
             $('#update-form').attr('action', '{{ route('users.update') }}');
@@ -499,16 +502,18 @@
             $('#create-form-card').hide();
         })
 
+        // Clear form button
         $(document).on('click', '#clear-btn', function() {
             $('#submit-form')[0].reset();
             $('#update-form')[0].reset();
+            $("#create_bio").summernote("code", "");
         })
 
-
-
-
-        // })
+        // Delete Ajax Call
         function test(id) {
+            var row = table.row($('#row-' + id));
+            var rowIndex = row.index() + 1;
+            console.log(rowIndex);
             $.ajax({
                 type: 'POST',
                 data: {
@@ -518,7 +523,8 @@
                 },
                 url: 'users/delete/' + id,
                 success: function(response) {
-                    window.location = '/users'
+                    row.remove().draw();
+                    $("#fire-modal-" + rowIndex).modal('hide');
                 }
             })
         }

@@ -14,7 +14,7 @@ class UserController extends Controller
     {
         $users = User::latest()->paginate();
 
-        return view('dashboard.users-list', compact('users'));
+        return view('dashboard.users', compact('users'));
     }
 
     public function store(Request $request)
