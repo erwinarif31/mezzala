@@ -15,6 +15,11 @@ class Tag extends Model
         'author_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
+
     public function getCreatedAtAttribute($date)
     {
         return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');

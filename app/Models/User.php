@@ -47,6 +47,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Relationship
+     */
+    public function tags()
+    {
+        return $this->hasMany(Tag::class, 'author_id');
+    }
+
+
+
+    /**
+     * Accessor and Mutator
+     */
     public function getCreatedAtAttribute($date)
     {
         return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');

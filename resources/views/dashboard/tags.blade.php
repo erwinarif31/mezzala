@@ -77,7 +77,7 @@
                                         <td class="align-middle">22x</td>
                                         {{-- <td>{{ $tags->email }}</td> --}}
                                         <td class="align-middle">{{ $tag->created_at }}</td>
-                                        <td class="align-middle">author</td>
+                                        <td class="align-middle">{{ $tag->user->name}}</td>
                                         {{-- <td>{{ $tags->created_at }}</td> --}}
                                         <td class="align-middle">
                                             <a href="#edit-form-card"
