@@ -21,7 +21,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_admin')->default('0');
-            $table->string('status')->default('Active');
+            $table->unsignedTinyInteger('status')->default('2');
+            $table->string('img_src')->nullable();
+            $table->text('biography')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

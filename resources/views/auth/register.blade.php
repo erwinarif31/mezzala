@@ -36,32 +36,32 @@
                                 <form action="/register" method="POST">
                                     @csrf
                                     <div class="row">
-<div class="form-group col-6">
-                                        <label for="name">Name</label>
-                                        <input id="name" type="text"
-                                            class="form-control @error('name') is-invalid @enderror" name="name"
-                                            autofocus value="{{ old('name') }}">
-                                        @error('name')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                                        <div class="form-group col-6">
+                                            <label for="name">Name</label>
+                                            <input id="name" type="text"
+                                                class="form-control @error('name') is-invalid @enderror" name="name"
+                                                autofocus value="{{ old('name') }}">
+                                            @error('name')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group col-6">
+                                            <label for="username">Username</label>
+                                            <input id="username" type="text"
+                                                class="form-control @error('username') is-invalid @enderror"
+                                                name="username" autofocus value="{{ old('username') }}">
+                                            @error('username')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+
                                     </div>
 
-                                    <div class="form-group col-6">
-                                        <label for="username">Username</label>
-                                        <input id="username" type="text"
-                                            class="form-control @error('username') is-invalid @enderror" name="username"
-                                            autofocus value="{{ old('username') }}">
-                                        @error('username')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                    </div>
-                                    
                                     <div class="form-group">
                                         <label for="email">Email</label>
                                         <input id="email" type="email"

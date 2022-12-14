@@ -35,5 +35,11 @@ Route::get('/register', function () {
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('/dashboard/profile', [DashboardController::class, 'profile'])->middleware('auth');
 
-Route::get('/users', [UserController::class, 'index'])->middleware('is_admin');
+Route::get('/users', [UserController::class, 'index'])->middleware('is_admin')->middleware('auth')->name('users');
+Route::get('/users/{id}', [UserController::class, 'getUser'])->middleware('is_admin')->middleware('auth');
+
+Route::post('/users/update', [UserController::class, 'update'])->middleware('is_admin')->middleware('auth')->name('users.update');
+
+Route::post('/users', [UserController::class, 'store'])->middleware('is_admin')->middleware('auth');

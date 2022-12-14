@@ -7,13 +7,24 @@
         </ul>
     </form>
     <ul class="navbar-nav navbar-right">
-        <li class="dropdown"><a href="#" data-toggle="dropdown"
-                class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+        <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                @if (empty(auth()->user()->img_src))
+                    <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1"
+                        style="width: 25px; height: 25px; fit-content: contain;">
+                @elseif(str_contains(auth()->user()->img_src, 'post-images'))
+                    <img alt="image"
+                        src="{{ asset('storage/' . auth()->user()->img_src)}}"
+                        class="rounded-circle mr-1" style="width: 25px; height: 25px; fit-content: contain;">
+                @else
+                    <img alt="image"
+                        src="{{auth()->user()->img_src}}"
+                        class="rounded-circle mr-1" style="width: 25px; height: 25px; fit-content: contain;">
+                @endif
                 <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="features-profile.html" class="dropdown-item has-icon">
+                <a href="/dashboard/profile" class="dropdown-item has-icon">
                     <i class="far fa-user"></i> Profile
                 </a>
                 <div class="dropdown-divider"></div>
