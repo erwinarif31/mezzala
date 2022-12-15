@@ -95,7 +95,7 @@
                                             {{-- <button class="btn btn-danger"><i class="fas fa-trash"></i>
                                                 Delete</button> --}}
                                             <button class="btn btn-danger" data-confirm="Really?|Do you want to continue?"
-                                                data-confirm-yes="test({{ $user->id }});">Delete</button>;
+                                                data-confirm-yes="test({{ $user->id }});">Delete</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -173,7 +173,6 @@
                                 <input type="text" class="form-control" name="img-url"
                                     placeholder="Or insert url here.....">
                             </div>
-
                         </div>
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">User Level</label>

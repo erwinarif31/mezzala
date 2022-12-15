@@ -25,8 +25,8 @@ class Category extends Model
         return $this->hasMany(SubCategory::class, 'category_id');
     }
 
-    public function getCreatedAtAttribute($date)
+    public function articles()
     {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
+        return $this->hasMany(Article::class, 'category_id');
     }
 }

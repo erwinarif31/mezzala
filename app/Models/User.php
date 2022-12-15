@@ -60,18 +60,13 @@ class User extends Authenticatable
         return $this->hasMany(Category::class, 'author_id');
     }
 
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'author_id');
+    }
+
     public function subcategories()
     {
         return $this->hasMany(SubCategory::class, 'author_id');
-    }
-
-
-
-    /**
-     * Accessor and Mutator
-     */
-    public function getCreatedAtAttribute($date)
-    {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
     }
 }

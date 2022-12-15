@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
@@ -83,4 +84,16 @@ Route::controller(SubCategoryController::class)->group(function () {
     Route::post('/sub-category/update', 'update')->middleware('auth')->name('sub-category.update');
 
     Route::delete('/sub-category/delete/{id}', 'delete')->middleware('auth');
+
+    Route::get('/sub-category-of/{id}', 'getSubCategoryOf')->middleware('auth');
+});
+
+Route::controller(ArticleController::class)->group(function () {
+    Route::get('/article', 'index')->middleware('auth')->name('article');
+    Route::post('/article', 'store')->middleware('auth');
+
+    // Route::get('/sub-category/{id}', 'getSubCategory')->middleware('auth');
+    // Route::post('/sub-category/update', 'update')->middleware('auth')->name('sub-category.update');
+
+    // Route::delete('/sub-category/delete/{id}', 'delete')->middleware('auth');
 });

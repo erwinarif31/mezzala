@@ -5,6 +5,7 @@
         </div>
         <ul class="sidebar-menu">
             <li><a class="nav-link" href="/dashboard"><i class="fas fa-futbol"></i> <span>Dashboard</span></a></li>
+            <li><a class="nav-link" href="/article"><i class="fas fa-file-alt"></i> <span>Article</span></a></li>
             <li><a class="nav-link" href="/category"><i class="fas fa-layer-group"></i> <span>Category</span></a></li>
             <li><a class="nav-link" href="/sub-category"><i class="fas fa-th-list"></i> <span>Sub Category</span></a></li>
             <li><a class="nav-link" href="/tags"><i class="fas fa-tag"></i> <span>Tag</span></a></li>

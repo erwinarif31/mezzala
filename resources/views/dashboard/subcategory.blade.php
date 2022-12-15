@@ -94,7 +94,7 @@
                                             </a>
                                             <button class="btn btn-danger" data-confirm="Really?|Do you want to continue?"
                                                 data-confirm-yes="destroy({{ $subcategory->id }});"
-                                                @if (auth()->user()->id != $subcategory->author_id && auth()->user()->is_admin != 1) disabled @endif>Delete</button>;
+                                                @if (auth()->user()->id != $subcategory->author_id && auth()->user()->is_admin != 1) disabled @endif>Delete</button>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -48,6 +48,18 @@ class SubCategoryController extends Controller
         );
     }
 
+    public function getSubCategoryOf($id)
+    {
+        $subcategory = SubCategory::where('category_id', $id)->get();
+        // dd($subcategory);
+        return response()->json(
+            [
+                'subcategory' => $subcategory->toJson()
+            ],
+            200,
+        );
+    }
+
     public function update(Request $request)
     {
         // dd($request);

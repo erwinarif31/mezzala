@@ -20,8 +20,8 @@ class Tag extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function getCreatedAtAttribute($date)
+    public function articles()
     {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
+        return $this->belongsToMany(Article::class, 'article_tag');
     }
 }

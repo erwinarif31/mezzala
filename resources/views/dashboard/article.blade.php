@@ -1,11 +1,11 @@
 @extends('layouts.dashboard.master')
 
 @section('page-title')
-    Category
+    Article &mdash; Mezzala
 @endsection
 
 @section('module-title')
-    <h1>Categories List</h1>
+    <h1>Articles List</h1>
 @endsection
 
 @section('user-module')
@@ -63,36 +63,40 @@
                         <table class="table table-striped" id="tags-table">
                             <thead>
                                 <tr>
-                                    <th class='text-center'>Name</th>
-                                    <th class="text-center">Article Count</th>
-                                    <th class="text-center">Created At</th>
+                                    <th class='text-center'>Title</th>
+                                    <th class="text-center">Description</th>
+                                    <th class="text-center">Favorite Count</th>
+                                    <th class="text-center">Comment Count</th>
+                                    <th class="text-center">View Count</th>
+                                    <th class="text-center">Created Date</th>
                                     <th class="text-center">Author</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $category)
-                                    <tr id="row-{{ $category->id }}">
-                                        <td class="align-middle">{{ $category->name }}</td>
-                                        <td class="align-middle">22x</td>
-                                        {{-- <td>{{ $categorys->email }}</td> --}}
-                                        <td class="align-middle">{{ $category->created_at }}</td>
-                                        <td class="align-middle">{{ $category->user->name}}</td>
-                                        <td class="align-middle">{{ $category->status }}</td>
-                                        {{-- <td>{{ $tags->created_at }}</td> --}}
+                                @foreach ($articles as $article)
+                                    <tr id="row-{{ $article->id }}">
+                                        <td class="align-middle">{{ $article->title }}</td>
+                                        <td class="align-middle">{!! $article->description !!}</td>
+                                        <td class="align-middle">fav count</td>
+                                        <td class="align-middle">com count</td>
+                                        <td class="align-middle">{{ $article->view_count }}</td>
+                                        <td class="align-middle">{{ $article->created_at }}</td>
+                                        <td class="align-middle">{{ $article->user->name }}</td>
+                                        <td class="align-middle">{{ $article->status }}</td>
                                         <td class="align-middle">
                                             <a href="#edit-form-card"
-                                                style="color: white; @if (auth()->user()->id != $category->author_id && auth()->user()->is_admin != 1) pointer-events: none @endif"
-                                                class="edit-btn" id="{{ $category->id }}">
-                                                <button class="btn btn-primary" value='{{ $category->id }}'><i
+                                                style="color: white; @if (auth()->user()->id != $article->author_id && auth()->user()->is_admin != 1) pointer-events: none @endif"
+                                                class="edit-btn" id="{{ $article->id }}">
+                                                <button class="btn btn-primary" value='{{ $article->id }}'><i
                                                         class="fas fa-edit"></i>
                                                     Edit
                                                 </button>
                                             </a>
                                             <button class="btn btn-danger" data-confirm="Really?|Do you want to continue?"
-                                                data-confirm-yes="destroy({{ $category->id }});"
-                                                @if (auth()->user()->id != $category->author_id && auth()->user()->is_admin != 1) disabled @endif>Delete</button>
+                                                data-confirm-yes="destroy({{ $article->id }});"
+                                                @if (auth()->user()->id != $article->author_id && auth()->user()->is_admin != 1) disabled @endif>Delete</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -109,30 +113,104 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Create Category</h4>
+                    <h4>Create Article
+                    </h4>
                 </div>
                 <div class="card-body">
                     {{-- form card --}}
-                    <form id="submit-form" action="/category" method="post">
+                    <form id="submit-form" action="/article" method="post" enctype="multipart/form-data">
                         @csrf
+                        {{-- Title Field --}}
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Name</label>
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Title</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    name="name" value="{{ old('name') }}">
-                                @error('name')
+                                <input type="text" class="form-control @error('title') is-invalid @enderror"
+                                    name="title" value="{{ old('title') }}">
+                                @error('title')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
                         </div>
+
+                        {{-- Slug --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Slug</label>
+                            <div class="col-sm-12 col-md-7">
+                                <input type="text" class="form-control @error('slug') is-invalid @enderror"
+                                    name="slug" value="{{ old('slug') }}">
+                                @error('slug')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- Banner --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Banner</label>
+                            <div class="col-sm-12 col-md-7">
+                                <input type="file" class="form-control mb-3" name="banner-file">
+                                <input type="text" class="form-control" name="banner-url"
+                                    placeholder="Or insert url here.....">
+                            </div>
+                        </div>
+
+                        {{-- Description --}}
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Description</label>
                             <div class="col-sm-12 col-md-7">
                                 <textarea class="summernote-simple" name="description" id="create-desc"></textarea>
                             </div>
                         </div>
+
+                        {{-- Category Field --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
+                            <div class="col-sm-12 col-md-7">
+                                <select class="form-control" name="category_id" id="category-select">
+                                    <option value="" disabled selected>Select category</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Sub Category Field --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sub Category</label>
+                            <div class="col-sm-12 col-md-7">
+                                <select class="form-control" name="sub_category_id" id="select_subcategory">
+
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Tags Field --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tags</label>
+                            <div class="col-sm-12 col-md-7">
+                                @foreach ($tags as $tag)
+                                    <label class="selectgroup-item">
+                                        <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
+                                            class="selectgroup-input">
+                                        <span class="selectgroup-button">{{ $tag->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        {{-- Content Field --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Content</label>
+                            <div class="col-sm-12 col-md-7">
+                                <textarea class="summernote" name="content" id="create-content"></textarea>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                             <div class="col-sm-12 col-md-7">
@@ -230,6 +308,8 @@
     <script src="https://raw.githubusercontent.com/phstc/jquery-dateFormat/master/dist/jquery-dateformat.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="../assets/js/page/forms-advanced-forms.js"></script>
+
     <script>
         var fromDate;
         var toDate;
@@ -244,15 +324,15 @@
         var table = $("#tags-table").DataTable({
             "columnDefs": [{
                 "sortable": false,
-                "targets": [5, 3]
+                "targets": [8]
             }, {
                 "visible": false,
-                "targets": [4]
+                "targets": [7]
             }],
         })
 
         $("#filterDiv").append(
-            "<a href='#create-form-card' class='btn btn-success mr-3' id='create-btn' style='color: white;'><i class='fas fa-plus'></i>  Create Category</a>"
+            "<a href='#create-form-card' class='btn btn-success mr-3' id='create-btn' style='color: white;'><i class='fas fa-plus'></i>  Create Article</a>"
         )
         $("#filterDiv").append(
             "<button class='btn btn-primary' id='filterBtn' type='button' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-filter'></i>  Filter</button>"
@@ -343,26 +423,45 @@
             $('#edit-form-card').show();
             $('#create-form-card').hide();
 
-            
+
         })
 
         function destroy(id) {
-                var row = table.row($('#row-' + id));
-                var rowIndex = row.index() + 1;
-                console.log(rowIndex);
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id,
-                        _method: "DELETE"
-                    },
-                    url: 'category/delete/' + id,
-                    success: function(response) {
-                        row.remove().draw();
-                        $("#fire-modal-" + rowIndex).modal('hide');
-                    }
-                })
-            }
+            var row = table.row($('#row-' + id));
+            var rowIndex = row.index() + 1;
+            console.log(rowIndex);
+            $.ajax({
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                    _method: "DELETE"
+                },
+                url: 'category/delete/' + id,
+                success: function(response) {
+                    row.remove().draw();
+                    $("#fire-modal-" + rowIndex).modal('hide');
+                }
+            })
+        }
+
+        $('#category-select').on('change', function() {
+                    var category_id = $(this).val();
+                    $.ajax({
+                            type: 'get',
+                            url: 'sub-category-of/' + category_id,
+                            success: function(response) {
+                                let subcategory = JSON.parse(response.subcategory);
+                                $('#select_subcategory').html("");
+                                for (let index = 0; index < subcategory.length; index++) {
+                                    $('#select_subcategory').append(
+                                        "<option value='" + subcategory[index].id + "'>" + subcategory[index].name + "</option>")
+                                    }
+
+                                    // row.remove().draw();
+                                    // $("#fire-modal-" + rowIndex).modal('hide');
+                                }
+                            })
+                    })
     </script>
 @endsection
