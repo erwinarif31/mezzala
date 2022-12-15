@@ -85,7 +85,7 @@
                                         {{-- <td>{{ $tags->created_at }}</td> --}}
                                         <td class="align-middle">
                                             <a href="#edit-form-card"
-                                                style="color: white; @if (auth()->user()->id != $subcategory->author_id) pointer-events: none @endif"
+                                                style="color: white; @if (auth()->user()->id != $subcategory->author_id && auth()->user()->is_admin != 1) pointer-events: none @endif"
                                                 class="edit-btn" id="{{ $subcategory->id }}">
                                                 <button class="btn btn-primary" value='{{ $subcategory->id }}'><i
                                                         class="fas fa-edit"></i>
@@ -94,7 +94,7 @@
                                             </a>
                                             <button class="btn btn-danger" data-confirm="Really?|Do you want to continue?"
                                                 data-confirm-yes="destroy({{ $subcategory->id }});"
-                                                @if (auth()->user()->id != $subcategory->author_id) disabled @endif>Delete</button>;
+                                                @if (auth()->user()->id != $subcategory->author_id && auth()->user()->is_admin != 1) disabled @endif>Delete</button>;
                                         </td>
                                     </tr>
                                 @endforeach
