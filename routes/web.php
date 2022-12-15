@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -72,4 +73,14 @@ Route::controller(CategoryController::class)->group(function () {
     Route::post('/category/update', 'update')->middleware('auth')->name('category.update');
 
     Route::delete('/category/delete/{id}', 'delete')->middleware('auth');
+});
+
+Route::controller(SubCategoryController::class)->group(function () {
+    Route::get('/sub-category', 'index')->middleware('auth')->name('sub-category');
+    Route::post('/sub-category', 'store')->middleware('auth');
+
+    Route::get('/sub-category/{id}', 'getSubCategory')->middleware('auth');
+    Route::post('/sub-category/update', 'update')->middleware('auth')->name('sub-category.update');
+
+    Route::delete('/sub-category/delete/{id}', 'delete')->middleware('auth');
 });

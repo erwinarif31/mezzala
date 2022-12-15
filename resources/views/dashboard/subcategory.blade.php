@@ -1,11 +1,11 @@
 @extends('layouts.dashboard.master')
 
 @section('page-title')
-    Category
+    Sub Category
 @endsection
 
 @section('module-title')
-    <h1>Categories List</h1>
+    <h1>Sub Categories List</h1>
 @endsection
 
 @section('user-module')
@@ -64,6 +64,7 @@
                             <thead>
                                 <tr>
                                     <th class='text-center'>Name</th>
+                                    <th class='text-center'>Category Name</th>
                                     <th class="text-center">Article Count</th>
                                     <th class="text-center">Created At</th>
                                     <th class="text-center">Author</th>
@@ -72,27 +73,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $category)
-                                    <tr id="row-{{ $category->id }}">
-                                        <td class="align-middle">{{ $category->name }}</td>
+                                @foreach ($subcategories as $subcategory)
+                                    <tr id="row-{{ $subcategory->id }}">
+                                        <td class="align-middle">{{ $subcategory->name }}</td>
+                                        <td class="align-middle">{{ $subcategory->category->name }}</td>
                                         <td class="align-middle">22x</td>
-                                        {{-- <td>{{ $categorys->email }}</td> --}}
-                                        <td class="align-middle">{{ $category->created_at }}</td>
-                                        <td class="align-middle">{{ $category->user->name}}</td>
-                                        <td class="align-middle">{{ $category->status }}</td>
+                                        {{-- <td>{{ $subcategorys->email }}</td> --}}
+                                        <td class="align-middle">{{ $subcategory->created_at }}</td>
+                                        <td class="align-middle">{{ $subcategory->user->name }}</td>
+                                        <td class="align-middle">{{ $subcategory->status }}</td>
                                         {{-- <td>{{ $tags->created_at }}</td> --}}
                                         <td class="align-middle">
                                             <a href="#edit-form-card"
-                                                style="color: white; @if (auth()->user()->id != $category->author_id) pointer-events: none @endif"
-                                                class="edit-btn" id="{{ $category->id }}">
-                                                <button class="btn btn-primary" value='{{ $category->id }}'><i
+                                                style="color: white; @if (auth()->user()->id != $subcategory->author_id) pointer-events: none @endif"
+                                                class="edit-btn" id="{{ $subcategory->id }}">
+                                                <button class="btn btn-primary" value='{{ $subcategory->id }}'><i
                                                         class="fas fa-edit"></i>
                                                     Edit
                                                 </button>
                                             </a>
                                             <button class="btn btn-danger" data-confirm="Really?|Do you want to continue?"
-                                                data-confirm-yes="destroy({{ $category->id }});"
-                                                @if (auth()->user()->id != $category->author_id) disabled @endif>Delete</button>;
+                                                data-confirm-yes="destroy({{ $subcategory->id }});"
+                                                @if (auth()->user()->id != $subcategory->author_id) disabled @endif>Delete</button>;
                                         </td>
                                     </tr>
                                 @endforeach
@@ -113,7 +115,7 @@
                 </div>
                 <div class="card-body">
                     {{-- form card --}}
-                    <form id="submit-form" action="/category" method="post">
+                    <form id="submit-form" action="/sub-category" method="post">
                         @csrf
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Name</label>
@@ -125,6 +127,16 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
+                            <div class="col-sm-12 col-md-7">
+                                <select class="form-control" name="category_id">
+                                    @foreach ($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -151,7 +163,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Edit Category</h4>
+                    <h4>Edit Sub Category</h4>
                 </div>
                 <div class="card-body">
                     {{-- form card --}}
@@ -168,6 +180,16 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
+                            <div class="col-sm-12 col-md-7" id="category_id">
+                                <select class="form-control" name="category_id">
+                                    @foreach ($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -244,15 +266,15 @@
         var table = $("#tags-table").DataTable({
             "columnDefs": [{
                 "sortable": false,
-                "targets": [5, 3]
+                "targets": [6, 3]
             }, {
                 "visible": false,
-                "targets": [4]
+                "targets": [5]
             }],
         })
 
         $("#filterDiv").append(
-            "<a href='#create-form-card' class='btn btn-success mr-3' id='create-btn' style='color: white;'><i class='fas fa-plus'></i>  Create Category</a>"
+            "<a href='#create-form-card' class='btn btn-success mr-3' id='create-btn' style='color: white;'><i class='fas fa-plus'></i>  Create Sub Category</a>"
         )
         $("#filterDiv").append(
             "<button class='btn btn-primary' id='filterBtn' type='button' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-filter'></i>  Filter</button>"
@@ -272,7 +294,7 @@
             function(settings, data, dataIndex) {
                 var min = fromDate.val();
                 var max = toDate.val();
-                var date = new Date(data[2]);
+                var date = new Date(data[3]);
                 year = date.getFullYear();
                 month = date.getMonth() + 1;
                 day = date.getDate();
@@ -296,7 +318,7 @@
                     searchTerms.push("^" + $(this).val() + "$")
                 }
             })
-            table.column(4).search(searchTerms.join('|'), true, false, true).draw();
+            table.column(5).search(searchTerms.join('|'), true, false, true).draw();
             console.log($(this).val());
         });
 
@@ -328,41 +350,42 @@
         $(document).on('click', '.edit-btn', function() {
             let id = $(this).attr('id');
             $('#id').val(id);
-            $('#update-form').attr('action', '{{ route('category.update') }}');
+            $('#update-form').attr('action', '{{ route('sub-category.update') }}');
 
             $.ajax({
                 type: "get",
-                url: "/category/" + id,
+                url: "/sub-category/" + id,
                 success: function(response) {
                     console.log(response);
                     $('#id').val(response.id);
                     $('#edit-name').val(response.name);
+                    $('#category_id select').val(response.category_id).change();
                     $("#edit-desc").summernote("code", response.description);
                 }
             });
             $('#edit-form-card').show();
             $('#create-form-card').hide();
 
-            
+
         })
 
         function destroy(id) {
-                var row = table.row($('#row-' + id));
-                var rowIndex = row.index() + 1;
-                console.log(rowIndex);
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id,
-                        _method: "DELETE"
-                    },
-                    url: 'category/delete/' + id,
-                    success: function(response) {
-                        row.remove().draw();
-                        $("#fire-modal-" + rowIndex).modal('hide');
-                    }
-                })
-            }
+            var row = table.row($('#row-' + id));
+            var rowIndex = row.index() + 1;
+            console.log(rowIndex);
+            $.ajax({
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                    _method: "DELETE"
+                },
+                url: 'sub-category/delete/' + id,
+                success: function(response) {
+                    row.remove().draw();
+                    $("#fire-modal-" + rowIndex).modal('hide');
+                }
+            })
+        }
     </script>
 @endsection

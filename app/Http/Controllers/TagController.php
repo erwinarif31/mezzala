@@ -49,8 +49,8 @@ class TagController extends Controller
     {
         // dd($request);
         $validated = $request->validate([
-            'name' => ['required', 'unique:tags', 'max:255'],
-            'description' => ['required', 'max:255'],
+            'name' => 'required|max:255|unique:tags,name,' . $request->id,
+            'description' => 'required|max:255',
         ]);
 
         // dd($validated);

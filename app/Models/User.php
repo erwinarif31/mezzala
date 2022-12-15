@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(Category::class, 'author_id');
     }
 
+    public function subcategories()
+    {
+        return $this->hasMany(SubCategory::class, 'author_id');
+    }
+
 
 
     /**

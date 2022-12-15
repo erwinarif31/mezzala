@@ -48,8 +48,8 @@ class CategoryController extends Controller
     {
         // dd($request);
         $validated = $request->validate([
-            'name' => ['required', 'unique:categories', 'max:255'],
-            'description' => ['required', 'max:255'],
+            'name' => 'required|max:255|unique:categories,name,' . $request->id,
+            'description' => 'required|max:255',
         ]);
 
         // dd($validated);
