@@ -67,6 +67,7 @@
                                     <th class="text-center">Article Count</th>
                                     <th class="text-center">Created At</th>
                                     <th class="text-center">Author</th>
+                                    <th class="text-center">Status</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -78,6 +79,7 @@
                                         {{-- <td>{{ $tags->email }}</td> --}}
                                         <td class="align-middle">{{ $tag->created_at }}</td>
                                         <td class="align-middle">{{ $tag->user->name}}</td>
+                                        <td class="align-middle">{{ $tag->status}}</td>
                                         {{-- <td>{{ $tags->created_at }}</td> --}}
                                         <td class="align-middle">
                                             <a href="#edit-form-card"
@@ -242,7 +244,10 @@
         var table = $("#tags-table").DataTable({
             "columnDefs": [{
                 "sortable": false,
-                "targets": [4, 3]
+                "targets": [5, 3]
+            }, {
+                "visible": false,
+                "targets": [4]
             }],
         })
 
@@ -267,7 +272,7 @@
             function(settings, data, dataIndex) {
                 var min = fromDate.val();
                 var max = toDate.val();
-                var date = new Date(data[3]);
+                var date = new Date(data[2]);
                 year = date.getFullYear();
                 month = date.getMonth() + 1;
                 day = date.getDate();
@@ -291,7 +296,7 @@
                     searchTerms.push("^" + $(this).val() + "$")
                 }
             })
-            table.column(6).search(searchTerms.join('|'), true, false, true).draw();
+            table.column(4).search(searchTerms.join('|'), true, false, true).draw();
             console.log($(this).val());
         });
 
