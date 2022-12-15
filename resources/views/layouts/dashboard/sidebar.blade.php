@@ -5,6 +5,7 @@
         </div>
         <ul class="sidebar-menu">
             <li><a class="nav-link" href="/dashboard"><i class="fas fa-futbol"></i> <span>Dashboard</span></a></li>
+            <li><a class="nav-link" href="/category"><i class="fas fa-layer-group"></i> <span>Category</span></a></li>
             <li><a class="nav-link" href="/tags"><i class="fas fa-tag"></i> <span>Tag</span></a></li>
             @if (auth()->user()->is_admin == 1)
                 <li><a class="nav-link" href="/users"><i class="fas fa-user"></i> <span>User</span></a></li>

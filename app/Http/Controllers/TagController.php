@@ -39,7 +39,7 @@ class TagController extends Controller
             [
                 'id' => $test->id,
                 'name' => $test->name,
-                'description' => $test->email,
+                'description' => $test->description,
             ],
             200,
         );

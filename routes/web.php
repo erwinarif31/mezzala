@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -60,5 +61,15 @@ Route::controller(TagController::class)->group(function () {
     Route::get('/tags/{id}', 'getTag')->middleware('auth');
     Route::post('/tags/update', 'update')->middleware('auth')->name('tags.update');
 
-    Route::delete('/tags/delete/{id}', 'delete')->middleware('is_admin')->middleware('auth');
+    Route::delete('/tags/delete/{id}', 'delete')->middleware('auth');
+});
+
+Route::controller(CategoryController::class)->group(function () {
+    Route::get('/category', 'index')->middleware('auth')->name('category');
+    Route::post('/category', 'store')->middleware('auth');
+
+    Route::get('/category/{id}', 'getCategory')->middleware('auth');
+    Route::post('/category/update', 'update')->middleware('auth')->name('category.update');
+
+    Route::delete('/category/delete/{id}', 'delete')->middleware('auth');
 });
