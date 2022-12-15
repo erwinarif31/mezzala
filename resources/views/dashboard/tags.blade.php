@@ -252,7 +252,7 @@
         })
 
         $("#filterDiv").append(
-            "<a href='#create-form-card' class='btn btn-success mr-3' id='create-btn' style='color: white;'><i class='fas fa-plus'></i>  Create User</a>"
+            "<a href='#create-form-card' class='btn btn-success mr-3' id='create-btn' style='color: white;'><i class='fas fa-plus'></i>  Create Tag</a>"
         )
         $("#filterDiv").append(
             "<button class='btn btn-primary' id='filterBtn' type='button' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-filter'></i>  Filter</button>"
