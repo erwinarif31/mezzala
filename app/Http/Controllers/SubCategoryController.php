@@ -35,8 +35,6 @@ class SubCategoryController extends Controller
     public function getSubCategory($id)
     {
         $subcategory = SubCategory::find($id);
-        // dd($category);
-
         return response()->json(
             [
                 'id' => $subcategory->id,
@@ -51,7 +49,6 @@ class SubCategoryController extends Controller
     public function getSubCategoryOf($id)
     {
         $subcategory = SubCategory::where('category_id', $id)->get();
-        // dd($subcategory);
         return response()->json(
             [
                 'subcategory' => $subcategory->toJson()

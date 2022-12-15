@@ -77,6 +77,7 @@
                             <tbody>
                                 @foreach ($articles as $article)
                                     <tr id="row-{{ $article->id }}">
+                                        <p class="d-none" id="cat-id-{{$article->id}}">{{$article->category_id}}</p>
                                         <td class="align-middle">{{ $article->title }}</td>
                                         <td class="align-middle">{!! $article->description !!}</td>
                                         <td class="align-middle">fav count</td>
@@ -84,7 +85,13 @@
                                         <td class="align-middle">{{ $article->view_count }}</td>
                                         <td class="align-middle">{{ $article->created_at }}</td>
                                         <td class="align-middle">{{ $article->user->name }}</td>
-                                        <td class="align-middle">{{ $article->status }}</td>
+                                        <td class="align-middle">
+                                            @if ($article->status == 1)
+                                                Published
+                                            @else
+                                                Archived
+                                            @endif
+                                        </td>
                                         <td class="align-middle">
                                             <a href="#edit-form-card"
                                                 style="color: white; @if (auth()->user()->id != $article->author_id && auth()->user()->is_admin != 1) pointer-events: none @endif"
@@ -183,7 +190,7 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sub Category</label>
                             <div class="col-sm-12 col-md-7">
-                                <select class="form-control" name="sub_category_id" id="select_subcategory">
+                                <select class="form-control select_subcategory" name="sub_category_id" id="select_subcategory">
 
                                 </select>
                             </div>
@@ -233,25 +240,97 @@
                 </div>
                 <div class="card-body">
                     {{-- form card --}}
-                    <form id="update-form" action="" method="post">
+                    <form id="update-form" action="" method="post" enctype="multipart/form-data">
                         @csrf
+                        {{-- Title Field --}}
                         <div class="form-group row mb-4">
                             <input type="hidden" name="id" id="id" value="">
-                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Name</label>
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Title</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    name="name" value="{{ old('name') }}" id="edit-name">
-                                @error('name')
+                                <input type="text" class="form-control @error('title') is-invalid @enderror"
+                                    name="title" value="{{ old('title') }}" id="edit-title">
+                                @error('title')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
                         </div>
+
+                        {{-- Slug --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Slug</label>
+                            <div class="col-sm-12 col-md-7">
+                                <input type="text" class="form-control @error('slug') is-invalid @enderror"
+                                    name="slug" value="{{ old('slug') }}" id="edit-slug">
+                                @error('slug')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- Banner --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Banner</label>
+                            <div class="col-sm-12 col-md-7">
+                                <input type="file" class="form-control mb-3" name="banner-file">
+                                <input type="text" class="form-control" name="banner-url"
+                                    placeholder="Or insert url here.....">
+                            </div>
+                        </div>
+
+                        {{-- Description --}}
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Description</label>
                             <div class="col-sm-12 col-md-7">
                                 <textarea class="summernote-simple" name="description" id="edit-desc"></textarea>
+                            </div>
+                        </div>
+
+                        {{-- Category Field --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Category</label>
+                            <div class="col-sm-12 col-md-7">
+                                <select class="form-control" name="category_id" id="category-edit">
+                                    <option value="" disabled selected>Select category</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Sub Category Field --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sub Category</label>
+                            <div class="col-sm-12 col-md-7" id="sub-category-edit">
+                                <select class="form-control select_subcategory" name="sub_category_id">
+
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Tags Field --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tags</label>
+                            <div class="col-sm-12 col-md-7" id="edit-tag">
+                                @foreach ($tags as $tag)
+                                    <label class="selectgroup-item">
+                                        <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
+                                            class="selectgroup-input">
+                                        <span class="selectgroup-button">{{ $tag->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        {{-- Content Field --}}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Content</label>
+                            <div class="col-sm-12 col-md-7">
+                                <textarea class="summernote" name="content" id="edit-content"></textarea>
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -325,9 +404,6 @@
             "columnDefs": [{
                 "sortable": false,
                 "targets": [8]
-            }, {
-                "visible": false,
-                "targets": [7]
             }],
         })
 
@@ -408,22 +484,31 @@
         $(document).on('click', '.edit-btn', function() {
             let id = $(this).attr('id');
             $('#id').val(id);
-            $('#update-form').attr('action', '{{ route('category.update') }}');
-
+            $('#update-form').attr('action', '{{ route('article.update') }}');
+            let category_id = $('#cat-id-' + id).text();
+            
             $.ajax({
                 type: "get",
-                url: "/category/" + id,
+                url: "/article/" + id,
                 success: function(response) {
-                    console.log(response);
-                    $('#id').val(response.id);
-                    $('#edit-name').val(response.name);
-                    $("#edit-desc").summernote("code", response.description);
+                    let article = JSON.parse(response.article);
+                    let tags = JSON.parse(response.tags);
+                    console.log(article);
+                    $('#edit-title').val(article.title);
+                    $('#edit-slug').val(article.slug);
+                    $('#edit-desc').summernote("code", article.description);
+                    $('#category-edit select').val(article.category_id).change();
+                    sub_category_id = article.sub_category_id;
+                    $('#edit-content').summernote("code", article.content);
+                    $('sub-category-edit select').val(article.sub_category_id).change();
+                    
+                    
                 }
             });
-            $('#edit-form-card').show();
+            
             $('#create-form-card').hide();
-
-
+            $('#edit-form-card').show();
+            
         })
 
         function destroy(id) {
@@ -437,7 +522,7 @@
                     id: id,
                     _method: "DELETE"
                 },
-                url: 'category/delete/' + id,
+                url: 'article/delete/' + id,
                 success: function(response) {
                     row.remove().draw();
                     $("#fire-modal-" + rowIndex).modal('hide');
@@ -446,22 +531,38 @@
         }
 
         $('#category-select').on('change', function() {
-                    var category_id = $(this).val();
-                    $.ajax({
-                            type: 'get',
-                            url: 'sub-category-of/' + category_id,
-                            success: function(response) {
-                                let subcategory = JSON.parse(response.subcategory);
-                                $('#select_subcategory').html("");
-                                for (let index = 0; index < subcategory.length; index++) {
-                                    $('#select_subcategory').append(
-                                        "<option value='" + subcategory[index].id + "'>" + subcategory[index].name + "</option>")
-                                    }
+            var category_id = $(this).val();
+            $.ajax({
+                type: 'get',
+                url: 'sub-category-of/' + category_id,
+                success: function(response) {
+                    let subcategory = JSON.parse(response.subcategory);
+                    $('.select_subcategory').html("");
+                    for (let index = 0; index < subcategory.length; index++) {
+                        $('.select_subcategory').append(
+                            "<option value='" + subcategory[index].id + "' class='subcat-" + subcategory[index].id + "'>" + subcategory[index]
+                            .name + "</option>")
+                    }
+                }
+            })
+        })
 
-                                    // row.remove().draw();
-                                    // $("#fire-modal-" + rowIndex).modal('hide');
-                                }
-                            })
-                    })
+        $('#category-edit').on('change', function() {
+            var category_id = $('#category-edit').val();
+            console.log(category_id);
+            $.ajax({
+                type: 'get',
+                url: 'sub-category-of/' + category_id,
+                success: function(response) {
+                    let subcategory = JSON.parse(response.subcategory);
+                    $('.select_subcategory').html("");
+                    for (let index = 0; index < subcategory.length; index++) {
+                        $('.select_subcategory').append(
+                            "<option value='" + subcategory[index].id + "' class='subcat-" + subcategory[index].id + "'>" + subcategory[index]
+                            .name + "</option>")
+                    }
+                }
+            })
+        })
     </script>
 @endsection

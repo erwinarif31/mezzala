@@ -92,8 +92,8 @@ Route::controller(ArticleController::class)->group(function () {
     Route::get('/article', 'index')->middleware('auth')->name('article');
     Route::post('/article', 'store')->middleware('auth');
 
-    // Route::get('/sub-category/{id}', 'getSubCategory')->middleware('auth');
-    // Route::post('/sub-category/update', 'update')->middleware('auth')->name('sub-category.update');
+    Route::get('/article/{id}', 'getArticle')->middleware('auth');
+    Route::post('/article/update', 'update')->middleware('auth')->name('article.update');
 
-    // Route::delete('/sub-category/delete/{id}', 'delete')->middleware('auth');
+    Route::delete('/article/delete/{id}', 'delete')->middleware('auth');
 });
